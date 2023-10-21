@@ -4,58 +4,65 @@ pragma solidity >=0.8.2 <0.9.0;
 
 contract SoftwareRegistry {
 
-    struct Commit {
-        address owner;
-        string sha1Hash;
-        string authorName;
-        string authorEmail;
-        string isoDatetime;
-        // uint256 createdAt;
+    enum HashAlgorithm {
+        Sha1,
+        Sha256
     }
 
-    Commit[] _commits;
-    mapping(address => uint256[]) ownerCommitMap;
-    mapping(string => uint256) hashCommitMap;
+    struct Record {
+        address owner;
+        string combinatedFilesHash;
+        HashAlgorithm hashAlgorithm;
+        string ipfsUrl;
+        string authorName;
+        string authorEmail;
+        uint256 blockTimestamp;
+    }
+
+    Record[] _records;
+    mapping(address => uint256[]) ownerRecordsMap;
+    mapping(string => uint256) hashRecordMap;
 
     event NewRegistration(address indexed _owner, string _hash, uint256 _timestamp);
 
-    function registerCommit(
-        string memory sha1Hash,
+    function createRecord(
+        string memory combinatedFilesHash,
+        HashAlgorithm hashAlgorithm,
+        string memory ipfsUrl,
         string memory authorName,
-        string memory authorEmail,
-        string memory isoDatetime
+        string memory authorEmail
     ) public {
-        require(bytes(sha1Hash).length > 0, "SHA1 hash cannot be empty");
-        require(bytes(isoDatetime).length > 0, "ISO datetime cannot be empty");
+        require(bytes(combinatedFilesHash).length > 0, "Hash cannot be empty");
 
         uint256 timestamp = block.timestamp;
-        uint256 commitIndex = _commits.length;
+        uint256 recordsSize = _records.length;
 
-        Commit memory newCommit = Commit({
+        Record memory newRecord = Record({
             owner: msg.sender,
-            sha1Hash: sha1Hash,
+            combinatedFilesHash: combinatedFilesHash,
+            hashAlgorithm: hashAlgorithm,
+            ipfsUrl: ipfsUrl,
             authorName: authorName,
             authorEmail: authorEmail,
-            isoDatetime: isoDatetime//,
-            // createdAt: timestamp
+            blockTimestamp: timestamp
         });
 
-        _commits.push(newCommit);
-        ownerCommitMap[msg.sender].push(commitIndex);
-        hashCommitMap[sha1Hash] = commitIndex;
+        _records.push(newRecord);
+        ownerRecordsMap[msg.sender].push(recordsSize);
+        hashRecordMap[combinatedFilesHash] = recordsSize;
 
-        emit NewRegistration(msg.sender, sha1Hash, timestamp);
+        emit NewRegistration(msg.sender, combinatedFilesHash, timestamp);
     }
 
-    function getCommitsByOwner(address ownerAddress) public view returns (Commit[] memory) {
-        uint256[] memory commitIndices = ownerCommitMap[ownerAddress];
-        Commit[] memory commits = new Commit[](commitIndices.length);
+    function getRecordsByOwner(address ownerAddress) public view returns (Record[] memory) {
+        uint256[] memory recordIndexes = ownerRecordsMap[ownerAddress];
+        Record[] memory records = new Record[](recordIndexes.length);
 
-        for (uint256 i = 0; i < commitIndices.length; i++) {
-            uint256 commitIndex = commitIndices[i];
-            commits[i] = _commits[commitIndex];
+        for (uint256 i = 0; i < recordIndexes.length; i++) {
+            uint256 recordIndex = recordIndexes[i];
+            records[i] = _records[recordIndex];
         }
 
-        return commits;
+        return records;
     }
 }
