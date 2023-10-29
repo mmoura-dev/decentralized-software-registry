@@ -11,7 +11,7 @@ describe("SoftwareRegistry", function () {
             for (let i = 0; i < input.length; i += 2) {
                 result[i / 2] = parseInt(input.substr(i, 2), 16);
             }
-            
+
             return result;
         }
 
@@ -28,7 +28,7 @@ describe("SoftwareRegistry", function () {
     }
 
     it("Should returns the newly added registration", async function () {
-        const { softwareRegistry, sampleRecord, hashString, addr0,  } = await loadFixture(
+        const { softwareRegistry, sampleRecord, hashString, addr0 } = await loadFixture(
             deploySoftwareResgistryFixture);
 
         expect(await softwareRegistry.getRecordsByOwner(addr0.address)).to.deep.equals(
