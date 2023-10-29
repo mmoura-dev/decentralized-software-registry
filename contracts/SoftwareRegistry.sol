@@ -6,7 +6,7 @@ contract SoftwareRegistry {
     struct Record {
         address owner;
         bytes32 sha256Hash;
-        string ipfsUrl;
+        string ipfsCid;
         string authorName;
         string authorEmail;
         uint256 blockTimestamp;
@@ -30,7 +30,7 @@ contract SoftwareRegistry {
 
     function createRecord(
         bytes32 combinatedFilesHash,
-        string memory ipfsUrl,
+        string memory ipfsCid,
         string memory authorName,
         string memory authorEmail
     ) public {
@@ -42,7 +42,7 @@ contract SoftwareRegistry {
         Record memory newRecord = Record({
             owner: msg.sender,
             sha256Hash: combinatedFilesHash,
-            ipfsUrl: ipfsUrl,
+            ipfsCid: ipfsCid,
             authorName: authorName,
             authorEmail: authorEmail,
             blockTimestamp: timestamp
