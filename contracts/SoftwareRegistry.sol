@@ -55,20 +55,6 @@ contract SoftwareRegistry {
         emit NewRegistration(msg.sender, combinatedFilesHash, timestamp);
     }
 
-    function getRecordsByOwner(
-        address ownerAddress
-    ) public view returns (Record[] memory) {
-        uint256[] memory recordIndexes = ownerRecordsMap[ownerAddress];
-        Record[] memory records = new Record[](recordIndexes.length);
-
-        for (uint256 i = 0; i < recordIndexes.length; i++) {
-            uint256 recordIndex = recordIndexes[i];
-            records[i] = _records[recordIndex];
-        }
-
-        return records;
-    }
-
     function transferOwnership(uint256 recordIndex, address newOwner) public {
         require(recordIndex < _records.length, "Invalid record index");
         require(
@@ -93,6 +79,20 @@ contract SoftwareRegistry {
         ownerRecordsMap[newOwner].push(recordIndex);
 
         emit OwnershipTransferred(msg.sender, newOwner, recordIndex);
+    }
+
+    function getRecordsByOwner(
+        address ownerAddress
+    ) public view returns (Record[] memory) {
+        uint256[] memory recordIndexes = ownerRecordsMap[ownerAddress];
+        Record[] memory records = new Record[](recordIndexes.length);
+
+        for (uint256 i = 0; i < recordIndexes.length; i++) {
+            uint256 recordIndex = recordIndexes[i];
+            records[i] = _records[recordIndex];
+        }
+
+        return records;
     }
 
     function getRecordByHash(
