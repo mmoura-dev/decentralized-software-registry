@@ -4,15 +4,9 @@ pragma solidity >=0.8.2 <0.9.0;
 
 contract SoftwareRegistry {
 
-    enum HashAlgorithm {
-        Sha1,
-        Sha256
-    }
-
     struct Record {
         address owner;
         string combinatedFilesHash;
-        HashAlgorithm hashAlgorithm;
         string ipfsUrl;
         string authorName;
         string authorEmail;
@@ -27,7 +21,6 @@ contract SoftwareRegistry {
 
     function createRecord(
         string memory combinatedFilesHash,
-        HashAlgorithm hashAlgorithm,
         string memory ipfsUrl,
         string memory authorName,
         string memory authorEmail
@@ -40,7 +33,6 @@ contract SoftwareRegistry {
         Record memory newRecord = Record({
             owner: msg.sender,
             combinatedFilesHash: combinatedFilesHash,
-            hashAlgorithm: hashAlgorithm,
             ipfsUrl: ipfsUrl,
             authorName: authorName,
             authorEmail: authorEmail,

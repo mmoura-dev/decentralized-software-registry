@@ -8,7 +8,6 @@ describe("SoftwareRegistry", function () {
         const softwareRegistry = await ethers.deployContract("SoftwareRegistry");
         const sampleRecord = {
             hash: "f7c387a93b768133fe507de0e2e11ab8ba2ba21a",
-            hashAlgorithm: 0,
             ipfsUrl: "ipfs://lorem.ipsum/QmRmkky7qQBjCAU2gFUqfy3NXD7BPq8YVLPM7GHXBz7b5P",
             authorName: "John Doe",
             authorEmail: "john.doe@mail.com"
@@ -23,7 +22,7 @@ describe("SoftwareRegistry", function () {
         expect(await softwareRegistry.getRecordsByOwner(addr0.address)).to.deep.equals(
             []);
 
-        await softwareRegistry.createRecord(sampleRecord.hash, sampleRecord.hashAlgorithm,
+        await softwareRegistry.createRecord(sampleRecord.hash,
             sampleRecord.ipfsUrl, sampleRecord.authorName, sampleRecord.authorEmail);
 
         const result = await softwareRegistry.getRecordsByOwner(addr0.address)
@@ -32,7 +31,6 @@ describe("SoftwareRegistry", function () {
         expect(result[0].slice(0, -1)).to.deep.equals([
             addr0.address,
             sampleRecord.hash,
-            sampleRecord.hashAlgorithm,
             sampleRecord.ipfsUrl,
             sampleRecord.authorName,
             sampleRecord.authorEmail]);
