@@ -5,7 +5,7 @@ pragma solidity >=0.8.2 <0.9.0;
 contract SoftwareRegistry {
     struct Record {
         address owner;
-        string sha256Hash;
+        bytes32 sha256Hash;
         string ipfsUrl;
         string authorName;
         string authorEmail;
@@ -14,21 +14,21 @@ contract SoftwareRegistry {
 
     Record[] _records;
     mapping(address => uint256[]) ownerRecordsMap;
-    mapping(string => uint256) hashRecordMap;
+    mapping(bytes32 => uint256) hashRecordMap;
 
     event NewRegistration(
         address indexed _owner,
-        string _hash,
+        bytes32 _hash,
         uint256 _timestamp
     );
 
     function createRecord(
-        string memory combinatedFilesHash,
+        bytes32 combinatedFilesHash,
         string memory ipfsUrl,
         string memory authorName,
         string memory authorEmail
     ) public {
-        require(bytes(combinatedFilesHash).length > 0, "Hash cannot be empty");
+        require(combinatedFilesHash.length > 0, "Hash cannot be empty");
 
         uint256 timestamp = block.timestamp;
         uint256 recordsSize = _records.length;
@@ -96,9 +96,9 @@ contract SoftwareRegistry {
     );
 
     function getRecordByHash(
-        string memory combinatedFilesHash
+        bytes32 sha256Hash
     ) public view returns (Record memory) {
-        uint256 recordIndex = hashRecordMap[combinatedFilesHash];
+        uint256 recordIndex = hashRecordMap[sha256Hash];
         require(recordIndex > 0, "Record not found for the given hash");
 
         return _records[recordIndex - 1];
