@@ -3,7 +3,6 @@
 pragma solidity >=0.8.2 <0.9.0;
 
 contract SoftwareRegistry {
-
     struct Record {
         address owner;
         string sha256Hash;
@@ -17,7 +16,11 @@ contract SoftwareRegistry {
     mapping(address => uint256[]) ownerRecordsMap;
     mapping(string => uint256) hashRecordMap;
 
-    event NewRegistration(address indexed _owner, string _hash, uint256 _timestamp);
+    event NewRegistration(
+        address indexed _owner,
+        string _hash,
+        uint256 _timestamp
+    );
 
     function createRecord(
         string memory combinatedFilesHash,
@@ -46,7 +49,9 @@ contract SoftwareRegistry {
         emit NewRegistration(msg.sender, combinatedFilesHash, timestamp);
     }
 
-    function getRecordsByOwner(address ownerAddress) public view returns (Record[] memory) {
+    function getRecordsByOwner(
+        address ownerAddress
+    ) public view returns (Record[] memory) {
         uint256[] memory recordIndexes = ownerRecordsMap[ownerAddress];
         Record[] memory records = new Record[](recordIndexes.length);
 
@@ -60,7 +65,10 @@ contract SoftwareRegistry {
 
     function transferOwnership(uint256 recordIndex, address newOwner) public {
         require(recordIndex < _records.length, "Invalid record index");
-        require(msg.sender == _records[recordIndex].owner, "Only the current owner can transfer ownership");
+        require(
+            msg.sender == _records[recordIndex].owner,
+            "Only the current owner can transfer ownership"
+        );
         require(newOwner != address(0), "New owner address cannot be zero");
 
         _records[recordIndex].owner = newOwner;
@@ -68,7 +76,9 @@ contract SoftwareRegistry {
         uint256[] storage ownerRecordIndexes = ownerRecordsMap[msg.sender];
         for (uint256 i = 0; i < ownerRecordIndexes.length; i++) {
             if (ownerRecordIndexes[i] == recordIndex) {
-                ownerRecordIndexes[i] = ownerRecordIndexes[ownerRecordIndexes.length - 1];
+                ownerRecordIndexes[i] = ownerRecordIndexes[
+                    ownerRecordIndexes.length - 1
+                ];
                 ownerRecordIndexes.pop();
                 break;
             }
@@ -79,13 +89,18 @@ contract SoftwareRegistry {
         emit OwnershipTransferred(msg.sender, newOwner, recordIndex);
     }
 
-    event OwnershipTransferred(address indexed from, address indexed to, uint256 recordIndex);
+    event OwnershipTransferred(
+        address indexed from,
+        address indexed to,
+        uint256 recordIndex
+    );
 
-    function getRecordByHash(string memory combinatedFilesHash) public view returns (Record memory) {
-    uint256 recordIndex = hashRecordMap[combinatedFilesHash];
-    require(recordIndex > 0, "Record not found for the given hash");
+    function getRecordByHash(
+        string memory combinatedFilesHash
+    ) public view returns (Record memory) {
+        uint256 recordIndex = hashRecordMap[combinatedFilesHash];
+        require(recordIndex > 0, "Record not found for the given hash");
 
-    return _records[recordIndex - 1];
-}
-
+        return _records[recordIndex - 1];
+    }
 }
