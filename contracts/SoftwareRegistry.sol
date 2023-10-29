@@ -6,7 +6,7 @@ contract SoftwareRegistry {
 
     struct Record {
         address owner;
-        string combinatedFilesHash;
+        string sha256Hash;
         string ipfsUrl;
         string authorName;
         string authorEmail;
@@ -32,7 +32,7 @@ contract SoftwareRegistry {
 
         Record memory newRecord = Record({
             owner: msg.sender,
-            combinatedFilesHash: combinatedFilesHash,
+            sha256Hash: combinatedFilesHash,
             ipfsUrl: ipfsUrl,
             authorName: authorName,
             authorEmail: authorEmail,
