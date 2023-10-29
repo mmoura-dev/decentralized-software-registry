@@ -22,6 +22,12 @@ contract SoftwareRegistry {
         uint256 _timestamp
     );
 
+    event OwnershipTransferred(
+        address indexed from,
+        address indexed to,
+        uint256 recordIndex
+    );
+
     function createRecord(
         bytes32 combinatedFilesHash,
         string memory ipfsUrl,
@@ -88,12 +94,6 @@ contract SoftwareRegistry {
 
         emit OwnershipTransferred(msg.sender, newOwner, recordIndex);
     }
-
-    event OwnershipTransferred(
-        address indexed from,
-        address indexed to,
-        uint256 recordIndex
-    );
 
     function getRecordByHash(
         bytes32 sha256Hash
