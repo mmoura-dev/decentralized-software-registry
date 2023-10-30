@@ -47,4 +47,15 @@ describe("SoftwareRegistry", function () {
             sampleRecord.authorName,
             sampleRecord.authorEmail]);
     })
+
+    it("Should fail because authorName is empty string", async function () {
+        const { softwareRegistry, sampleRecord } = await loadFixture(
+            deploySoftwareResgistryFixture);
+
+        await expect(softwareRegistry.createRecord(
+            sampleRecord.hash,
+            sampleRecord.ipfsUrl,
+            "",
+            sampleRecord.authorEmail)).to.be.revertedWith("Author name cannot be empty string");
+    })
 });
