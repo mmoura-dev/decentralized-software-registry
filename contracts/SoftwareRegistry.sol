@@ -36,6 +36,7 @@ contract SoftwareRegistry {
     ) public {
         require(combinatedFilesHash.length > 0, "Hash cannot be empty");
         require(bytes(authorName).length > 0, "Author name cannot be empty string");
+        require(bytes(authorEmail).length > 0, "Author e-mail cannot be empty string");
 
         uint256 timestamp = block.timestamp;
         uint256 recordsSize = _records.length;
