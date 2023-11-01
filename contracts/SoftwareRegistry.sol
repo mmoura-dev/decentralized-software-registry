@@ -56,20 +56,20 @@ contract SoftwareRegistry {
 
         emit NewRegistration(msg.sender, combinatedFilesHash, timestamp);
     }
-
-    function transferOwnership(uint256 recordIndex, address newOwner) public {
-        require(recordIndex < _records.length, "Invalid record index");
+    //recordIndex
+    function transferOwnership(uint256 hashRecord, address newOwner) public {
+        require(hashRecord < _records.length, "Invalid record index");
         require(
-            msg.sender == _records[recordIndex].owner,
+            msg.sender == _records[hashRecord].owner,
             "Only the current owner can transfer ownership"
         );
         require(newOwner != address(0), "New owner address cannot be zero");
 
-        _records[recordIndex].owner = newOwner;
+        _records[hashRecord].owner = newOwner;
 
         uint256[] storage ownerRecordIndexes = ownerRecordsMap[msg.sender];
         for (uint256 i = 0; i < ownerRecordIndexes.length; i++) {
-            if (ownerRecordIndexes[i] == recordIndex) {
+            if (ownerRecordIndexes[i] == hashRecord) {
                 ownerRecordIndexes[i] = ownerRecordIndexes[
                     ownerRecordIndexes.length - 1
                 ];
@@ -78,9 +78,9 @@ contract SoftwareRegistry {
             }
         }
 
-        ownerRecordsMap[newOwner].push(recordIndex);
+        ownerRecordsMap[newOwner].push(hashRecord);
 
-        emit OwnershipTransferred(msg.sender, newOwner, recordIndex);
+        emit OwnershipTransferred(msg.sender, newOwner, hashRecord);
     }
 
     function getRecordsByOwner(
