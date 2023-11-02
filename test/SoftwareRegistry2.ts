@@ -16,7 +16,7 @@ describe("SoftwareRegistry", function () {
 
         const [addr0, addr1, addr2] = await ethers.getSigners();
         const softwareRegistry = await ethers.deployContract("SoftwareRegistry");
-        const hashString = "a5f4f02d5f3995b9c4a8895c96a22e48f2ef69600e72a6a8f596a8d09c6ab003"
+        const hashString = "a5f4f02d5f3995b9c4a8895c96a22e48f2ef69600e72a6a8f596a8d09c6ab003";
         const sampleRecord = {
             hash: stringToByteArray(hashString),
             ipfsUrl: "ipfs://lorem.ipsum/QmRmkky7qQBjCAU2gFUqfy3NXD7BPq8YVLPM7GHXBz7b5P",
@@ -36,7 +36,7 @@ describe("SoftwareRegistry", function () {
         await softwareRegistry.createRecord(sampleRecord.hash,
             sampleRecord.ipfsUrl, sampleRecord.authorName, sampleRecord.authorEmail);
 
-        const result = await softwareRegistry.getRecordsByOwner(addr0.address)
+        const result = await softwareRegistry.getRecordsByOwner(addr0.address);
 
         expect(result).to.have.lengthOf(1);
         expect(result[0].slice(0, -1)).to.deep.equals([
@@ -45,7 +45,7 @@ describe("SoftwareRegistry", function () {
             sampleRecord.ipfsUrl,
             sampleRecord.authorName,
             sampleRecord.authorEmail]);
-    })
+    });
 
     it("Should fail because authorName is an empty string", async function () {
         const { softwareRegistry, sampleRecord } = await loadFixture(
@@ -80,9 +80,11 @@ describe("SoftwareRegistry", function () {
         await softwareRegistry.transferOwnership(result.recordIndex, addr1.address);
 
         const updatedRecord = await softwareRegistry.getRecordByHash(sampleRecord.hash);
+
         expect(updatedRecord.owner).to.equal(addr1.address);
 
         const oldOwnerRecords = await softwareRegistry.getRecordsByOwner(addr0.address);
+
         expect(oldOwnerRecords.length).to.equal(0);
     });
 
