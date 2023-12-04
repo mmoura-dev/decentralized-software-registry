@@ -1,0 +1,16 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "description": "contract command line interface",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matheus Moura",
+  "license": "MIT",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "ethers": "^6.9.0"
+  }
+}
