@@ -1,12 +1,12 @@
 <script>
-	import Counter from './Counter.svelte';
+	import RegistryForm from './RegistryForm.svelte';
 	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>DSR</title>
+	<meta name="description" content="DSR" />
 </svelte:head>
 
 <section>
@@ -18,14 +18,10 @@
 			</picture>
 		</span>
 
-		to your new<br />SvelteKit app
+		Decentralized Software Registry
 	</h1>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
+	<RegistryForm />
 </section>
 
 <style>
